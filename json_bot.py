@@ -3,7 +3,6 @@ from pathlib import Path
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
-# Конфигурация
 TOKEN = 'укажите токен'
 FILES_DIR = Path('')  # Путь к директории с файлами
 
@@ -45,7 +44,6 @@ async def send_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(formatted_text)
             
     except json.JSONDecodeError:
-        # Проверяем, пустой ли файл
         file_path = files[command]
         if is_file_empty(file_path):
             await update.message.reply_text("В данный момент предложений нет в категории")
@@ -68,18 +66,14 @@ def is_data_empty(data):
     if data is None:
         return True
     elif isinstance(data, list):
-        # Проверяем пустой список
         if len(data) == 0:
             return True
-        # Проверяем список с пустыми элементами
         if all(is_item_empty(item) for item in data):
             return True
         return False
     elif isinstance(data, dict):
-        # Проверяем пустой словарь
         if len(data) == 0:
             return True
-        # Проверяем словарь с пустыми значениями
         if all(value is None or value == '' for value in data.values()):
             return True
         return False
@@ -204,3 +198,4 @@ if __name__ == '__main__':
         print("\nБот остановлен")
     except Exception as e:
         print(f"Ошибка при запуске: {e}")
+
